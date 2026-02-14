@@ -5,6 +5,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 import sv.edu.udb.configuration.TestInfrastructureConfig;
+import sv.edu.udb.repository.AccountRepository;
+import sv.edu.udb.service.implementation.TransferServiceImpl;
+
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -46,6 +51,18 @@ class TransferServiceTest {
         assertNotNull(transferService); //Not null object
         final Double amountTransfered = transferService.transfer(1, 2, 20D);
         assertEquals(400D, amountTransfered);
+    }
+
+    @Test
+    void getAccountByAccountNumber() {
+        final AccountRepository accountRepository = context.getBean(AccountRepository.class);
+        //AccountRepository no nulo
+        assertNotNull(accountRepository, "accountRepository no debería ser nulo");
+        final String getAccount = accountRepository.findAccountNumber(3);
+        //Número de cuenta no nulo
+        assertNotNull(getAccount, "El número no debería ser nulo");
+        //Longitud de número de cuenta
+        assertEquals(36, getAccount.length(), "La longitud del numero de cuenta debe ser de 36");
     }
 }
 
